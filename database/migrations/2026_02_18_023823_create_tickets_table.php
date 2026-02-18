@@ -11,15 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tickets', function (Blueprint $table) {
-            $table->increments('ticketID');
-            $table->unsignedInteger('eventID');
-            $table->foreign('eventID')->references('eventID')->on('events')->onDelete('cascade');
-            $table->string('ticketType');
-            $table->decimal('price', 8, 2);
-            $table->integer('quantity_available');
-            $table->timestamps();
-        });
+Schema::create('tickets', function (Blueprint $table) {
+    $table->id('ticketID'); // BIGINT UNSIGNED
+    $table->unsignedBigInteger('eventID'); // BIGINT UNSIGNED to match events.eventID
+    $table->foreign('eventID')
+          ->references('eventID')
+          ->on('events')
+          ->onDelete('cascade');
+    $table->string('ticketType');
+    $table->decimal('price', 8, 2);
+    $table->integer('quantity_available');
+    $table->timestamps();
+});
+
     }
 
     /**
