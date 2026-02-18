@@ -12,16 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('payments', function (Blueprint $table) {
-    $table->id('paymentID');
-    $table->foreignId('cartID')
-          ->constrained('cart_orders', 'cartID')
-          ->cascadeOnDelete();
-    $table->string('payment_method'); // GCash, Credit Card, Cash
-    $table->decimal('payment', 8, 2);
-    $table->timestamp('date_paid')->nullable();
-    $table->timestamps();
-});
-
+            $table->increments('paymentID');
+            $table->unsignedInteger('cartID');
+            $table->foreign('cartID')->references('cartID')->on('cart_orders')->onDelete('cascade');
+            $table->string('payment_method'); // 'GCash','Credit Card','Cash'
+            $table->decimal('payment', 8, 2);
+            $table->timestamp('date_paid')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**

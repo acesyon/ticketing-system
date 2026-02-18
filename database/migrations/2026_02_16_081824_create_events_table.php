@@ -12,15 +12,30 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('events', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->dateTime('start_date');
-            $table->dateTime('end_date')->nullable();
-            $table->string('location')->nullable();
-            $table->string('status')->default('upcoming'); // upcoming, ongoing, completed, cancelled
-            $table->integer('capacity')->nullable();
+            $table->increments('eventID');
+            $table->string('event_name');
+            $table->text('description');
+            $table->string('location');
+            $table->date('eventDate');
+            $table->time('eventTime');
+            $table->string('status')->default('active'); // 'active','cancelled','completed'
             $table->timestamps();
+        });
+
+        Schema::create('event_attendees', function (Blueprint $table) {
+            $table->increments('attendeeID');
+            $table->integer('eventID')->unsigned();
+            $table->foreign('eventID')->references('eventID')->on('events');
+            $table->integer('userID')->unsigned();
+            $table->foreign('userID')->references('userID')->on('users');
+        });
+
+        Schema::create('event_comments', function (Blueprint $table) {
+            $table->increments('commentID');
+            $table->integer('eventID')->unsigned();
+            $table->foreign('eventID')->references('eventID')->on('events');
+            $table->integer('userID')->unsigned();
+            $table->foreign('userID')->references('userID')->on('users');
         });
     }
 

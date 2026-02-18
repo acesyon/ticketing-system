@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('contact_no');
             $table->string('password');
-            $table->string('role')->default('admin'); // 'user' or 'admin'
+            $table->string('role')->default('user'); // 'user' or 'admin'
             $table->timestamps();
         });
 
