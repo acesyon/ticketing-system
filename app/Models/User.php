@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,14 +10,17 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, TwoFactorAuthenticatable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    // Tell Laravel the primary key is 'userID'
+    protected $primaryKey = 'userID';
+
+    // If your userID is not auto-incrementing (optional)
+    // public $incrementing = true; // default is true
+
+    // If your primary key is not an integer (optional)
+    // protected $keyType = 'int'; // default is 'int'
+
     protected $fillable = [
         'first_name',
         'last_name',
@@ -28,11 +30,6 @@ class User extends Authenticatable
         'password',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'two_factor_secret',
@@ -40,11 +37,6 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -53,9 +45,6 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * Get the user's full name.
-     */
     public function getNameAttribute(): string
     {
         return collect([$this->first_name, $this->middle_name, $this->last_name])
@@ -63,9 +52,6 @@ class User extends Authenticatable
             ->implode(' ');
     }
 
-    /**
-     * Get the user's initials
-     */
     public function initials(): string
     {
         return Str::of($this->first_name)->substr(0, 1)->append(
